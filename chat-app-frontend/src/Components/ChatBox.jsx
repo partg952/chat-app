@@ -1,4 +1,4 @@
-import React from "react";
+/* eslint-disable react/jsx-key */
 import { useState,useEffect ,useRef} from "react";
 import SocketIOClient from 'socket.io-client';
 import './ChatBox.scss';

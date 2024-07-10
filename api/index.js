@@ -1,20 +1,21 @@
-let express = require("express");
-let app = express();
-let cors = require("cors");
-let {Server}= require("socket.io");
-let http_server = require("http").createServer(app);
-const io = new Server(http_server,{cors:{origin:"*"}});
-app.use(cors());
+const express = require("express");
+const RegisterUser = require("./controllers/registerUser.js");
+const LoginUser = require("./controllers/loginUser.js");
+const app = express();
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+app.use(express.json());
+app.use("/register",RegisterUser);
+app.use("/login",LoginUser);
+mongoose
+  .connect(
+    "mongodb+srv://Parth_sharma:iostream2311@cluster0.syfilge.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+  )
+  .then(() => {
+    console.log("connected to the db");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
-
-io.on("connection",(socket)=>{
-  console.log("a user connected!!")
-});
-
-app.get('/',(req,res)=>{
-  res.send("api is working!!")
-});
-
-
-
-http_server.listen(8080,()=>console.log("the server is listening at port 8080"));
+app.listen(2003, () => console.log("listening on port 2003"));
