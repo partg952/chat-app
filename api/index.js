@@ -1,15 +1,21 @@
 const express = require("express");
+require("dotenv").config();
+console.log(process.env.MONGODB_URL);
 const RegisterUser = require("./controllers/registerUser.js");
+const http = require("http");
+const cors = require("cors");
 const LoginUser = require("./controllers/loginUser.js");
 const app = express();
+const server = http.createServer(app);
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 app.use(express.json());
-app.use("/register",RegisterUser);
-app.use("/login",LoginUser);
+app.use(cors());
+app.use("/register", RegisterUser);
+app.use("/login", LoginUser);
 mongoose
   .connect(
-    "mongodb+srv://Parth_sharma:iostream2311@cluster0.syfilge.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+"mongodb+srv://Parth_sharma:"+process.env.DB_PASS+"@cluster0.syfilge.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
   )
   .then(() => {
     console.log("connected to the db");
@@ -18,4 +24,4 @@ mongoose
     console.log(err);
   });
 
-app.listen(2003, () => console.log("listening on port 2003"));
+server.listen(2003, () => console.log("listening on port 2003"));
