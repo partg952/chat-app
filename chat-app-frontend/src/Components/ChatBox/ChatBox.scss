@@ -1,14 +1,15 @@
-#chat-box-container{
+#chat-box-container {
     width: 70%;
     float: right;
-    background-color:blueviolet;
+    background-color: blueviolet;
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     flex-direction: column-reverse;
-    input{
+
+    input {
         width: 80%;
         padding: 10px;
         margin: 10px;
@@ -16,9 +17,10 @@
         border: 0;
         position: sticky;
         bottom: 0;
-        
+
     }
-    div#chats-box{
+
+    div#chats-box {
         height: 95%;
         display: flex;
 
@@ -26,18 +28,21 @@
         flex-direction: column;
         width: 100%;
         background-color: brown;
-        div#message{
+
+        div#message {
             width: auto;
-            p#message-text{
+
+            p#message-text {
                 background-color: aqua;
-                text-wrap:balance;
-                border-radius:5px;
+                text-wrap: balance;
+                border-radius: 5px;
                 width: fit-content;
                 padding: 10px;
             }
         }
     }
-    div#user-message{
+
+    div#user-message {
         border-radius: 2px 2px 0 2px;
     }
 }
