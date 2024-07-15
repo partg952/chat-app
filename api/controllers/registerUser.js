@@ -1,10 +1,25 @@
 const express = require("express");
 require("dotenv").config();
+const multer = require("multer");
 const nodemailer = require("nodemailer");
 const mongoose = require("mongoose");
+const { GridFsStorage } = require("multer-gridfs-storage");
 const userModel = require("../models/User.js");
 const bcrypt = require("bcrypt");
 const router = express.Router();
+const dbUrl = process.env.MONGODB_URL;
+console.log(dbUrl);
+const storage = GridFsStorage({
+  url: dbUrl,
+  file: (req, file) => {
+    return {
+      bucketName: "pics",
+      filename: req.userEmail,
+    };
+  },
+});
+
+const upload = multer({ storage });
 //hashing the password
 async function encryptPass(password) {
   const salt = await bcrypt.genSalt(10);
@@ -54,13 +69,12 @@ function sendOTP(email) {
     });
   });
 }
-router.post("/", async (req, res) => {
+router.post("/", upload.single("profile_pic"), async (req, res) => {
   try {
+    console.log(req.file);
     const { userName, userEmail, password } = req.body;
     console.log(userEmail);
-    const profile_pic = req.body.profile_pic || "";
-    
-    const user_bio = req.body.user_bio || "";
+    const profile_pic = "";
     const encrypted_pass = await encryptPass(password);
     const { v4: uuidv4 } = require("uuid");
     await checkUserExistence(userEmail);
@@ -72,19 +86,20 @@ router.post("/", async (req, res) => {
         email: userEmail,
         password: encrypted_pass,
         profile_pic: profile_pic,
-        user_bio: user_bio,
       },
       chats: [],
       friends: [],
     });
     await data.save();
-    res.status(200).json({
+    console.log(req.file.buffer);
+
+    res.json({
       Message: "The user has been saved!!",
     });
   } catch (err) {
     console.log(err);
-    res.status(500).json({
-      Error: err,
+    res.json({
+      Message: err,
     });
   }
 });
