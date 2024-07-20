@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "@reduxjs/toolkit";
 import axios from "axios";
 import { useRef, useState } from "react";
 import "./Login.scss";
@@ -9,19 +10,18 @@ function Login() {
   const [color, setColor] = useState("red");
   const reader = new FileReader();
   const navigate = useNavigate();
-  const [url,setUrl] = useState('');
-  const [file,setFile] = useState();
+  const [url, setUrl] = useState("");
+  const [file, setFile] = useState();
   const fileRef = useRef();
   const [loginZindex, setLoginZindex] = useState(1);
   const [registerZindex, setRegisterZindex] = useState(-1);
   const [formDataLogin, setFormDataLogin] = useState({});
-  const [formDataRegister,setFormDataRegister] = useState({});
+  const [formDataRegister, setFormDataRegister] = useState({});
   const [content, setContent] = useState("");
   console.log(formDataLogin);
   console.log(Object.keys(formDataRegister));
   console.log(formDataRegister);
   function handleFormDataChangeLogin(e) {
-
     const name = e.target.name;
     const value = e.target.value;
     setFormDataLogin({
@@ -29,18 +29,23 @@ function Login() {
       [name]: value,
     });
   }
-  
+
   function handleFormDataRegister(e) {
     const name = e.target.name;
     const value = e.target.value;
-    value.length!=0 ? setFormDataRegister({
-      ...formDataRegister,
-      [name] : value
-    }) : delete formDataRegister[name];
+    value.length != 0
+      ? setFormDataRegister({
+          ...formDataRegister,
+          [name]: value,
+        })
+      : delete formDataRegister[name];
     console.log(formDataRegister);
   }
   function onSubmitLogin() {
-    if (formDataLogin.email != undefined && formDataLogin.password != undefined) {
+    if (
+      formDataLogin.email != undefined &&
+      formDataLogin.password != undefined
+    ) {
       console.log(formDataLogin.width);
       axios
         .post("http://localhost:2003/login", formDataLogin)
@@ -58,28 +63,40 @@ function Login() {
     }
   }
   function onSubmitRegister() {
-    if (Object.keys(formDataRegister).length == 4 && formDataRegister.password == formDataRegister['confirm-password']) {
-      const formData =  new FormData();
-      formData.append("userEmail",formDataRegister.email);
-      formData.append("userName",formDataRegister.username);
-      formData.append("password",formDataRegister.password);
-      formData.append("profile_pic",file);
-      const config = {headers:{"Content-Type" : "multipart/form-data"}};
-      axios.post("http://localhost:2003/register" ,formData,config).then(res => {
-        console.log(res);
-      }).catch(err => {
-        console.log(err);
-      })
-      }
+    if (
+      Object.keys(formDataRegister).length == 4 &&
+      formDataRegister.password == formDataRegister["confirm-password"]
+    ) {
+      const formData = new FormData();
+      console.log(formDataRegister.email);
+      formData.append("userEmail", formDataRegister.email);
+      formData.append("userName", formDataRegister.username);
+      formData.append("password", formDataRegister.password);
+      formData.append("profile_pic", file);
+      const config = { headers: { "Content-Type": "multipart/form-data" } };
+      axios
+        .post("http://localhost:2003/register", formData, config)
+        .then((res) => {
+          console.log(res);
+          if (res.data.Message == "The user has been saved") {
+            navigate("/home");
+          } else {
+            alert("some error occured please try again");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
-  
+
   function bringLoginUp() {
-      setLoginZindex(1);
-      setRegisterZindex(-1);
+    setLoginZindex(1);
+    setRegisterZindex(-1);
   }
   function bringRegisterUp() {
-     setLoginZindex(-1);
-     setRegisterZindex(1);
+    setLoginZindex(-1);
+    setRegisterZindex(1);
   }
   return (
     <div id="login-parent">
@@ -113,7 +130,11 @@ function Login() {
       </div>
       <div id="register-container" style={{ zIndex: registerZindex }}>
         <h1>App Name</h1>
-        <form onSubmit={(e) => {e.preventDefault()}}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
           <img
             src={
               url === ""
@@ -130,7 +151,7 @@ function Login() {
             style={{ display: "none" }}
             type="file"
             ref={fileRef}
-            onChange={function(e){
+            onChange={function (e) {
               console.log(e.target.files[0]);
               setFile(e.target.files[0]);
               reader.readAsDataURL(e.target.files[0]);

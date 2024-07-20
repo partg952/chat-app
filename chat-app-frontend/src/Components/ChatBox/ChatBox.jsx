@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import SocketIOClient from "socket.io-client";
 import "./ChatBox.scss";
 function ChatBox() {
-  const io = SocketIOClient("http://localhost:8080/");
+  // const io = SocketIOClient("http://localhost:8080/");
   const messageRef = useRef();
   function sendMessages() {
     setMessages([
@@ -12,12 +12,12 @@ function ChatBox() {
     ]);
     messageRef.current.value = "";
   }
-  useEffect(() => {
-    io.on("connect", (socket) => {
-      console.log("connected to the server successfully!!");
-      console.log(socket.id);
-    });
-  }, []);
+  // useEffect(() => {
+  //   io.on("connect", (socket) => {
+  //     console.log("connected to the server successfully!!");
+  //     console.log(socket.id);
+  //   });
+  // }, []);
   const [messages, setMessages] = useState([
     { message: "hi how are you doing", sent: "user" },
     { message: "i am fine how about you", sent: "friend" },

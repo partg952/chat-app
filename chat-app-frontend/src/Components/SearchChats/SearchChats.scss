@@ -1,4 +1,7 @@
+body {}
+
 #search-chats-div {
+
   float: left;
   height: 100%;
   width: 30%;
@@ -6,6 +9,7 @@
   padding: 5px;
   align-items: center;
   justify-content: center;
+
   input {
     position: relative;
     display: flex;
@@ -17,23 +21,100 @@
     margin-right: auto;
     width: 90%;
   }
+
   div#chats-and-contacts {
     padding: 10px;
     background-color: yellow;
     margin: 10px;
     height: 100%;
     overflow: scroll;
+
+    div#search-chat-results {
+      height: 300px;
+      overflow: scroll;
+      background-color: purple;
+      width: 100%;
+      position: absolute;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: center;
+      // justify-content: center;
+      width: 30%;
+      left: 5px;
+      border-radius: 10px;
+      overflow-x: hidden;
+
+      &::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color: rgba(0, 0, 0, 0.222);
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.468);
+        }
+      }
+
+      &::-webkit-scrollbar-track {
+        background-color: transparent;
+      }
+
+      #search-result-container {
+        margin-top: 30px;
+
+        #search-result {
+          h6 {
+            margin: 0;
+          }
+          width: 270px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          border: 0; 
+          padding: 5px;
+          border-radius: 5px;
+          background-color: red;
+          margin: 5px;
+          button#add-friend {
+            background-color: transparent;
+            border: 0;
+            cursor: pointer;
+            font-size: large;
+          }
+        }
+
+
+      }
+
+      #close-button {
+        background-color: transparent;
+        border: 0;
+        cursor: pointer;
+        float: left;
+        text-align: right;
+        position:inherit;
+        right: 0;
+        z-index: 3;
+        margin-top: 10px;
+        margin-right: 0;
+      }
+    }
+
     div#chat-item {
       padding: 5px;
       position: relative;
       margin-left: -6px;
-      margin-right:auto ;
+      margin-right: auto;
       justify-content: space-between;
       display: flex;
       flex-direction: column;
       width: 100%;
       border: black 2px solid;
       height: 50px;
+
       p {
         margin: 0;
       }

@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
   },
   chats: [],
   friends: [],
+  requests : []
 });
 const userModel = mongoose.model("User", userSchema);
 
