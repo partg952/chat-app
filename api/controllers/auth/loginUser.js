@@ -20,6 +20,7 @@ router.post("/", async function (req, res) {
       } else if (data) {
         res.json({
           Message: "Login success",
+          userData:user
         });
       } else {
         res.json({
