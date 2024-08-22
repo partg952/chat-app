@@ -1,27 +1,35 @@
 /* eslint-disable react/jsx-key */
-import { useState, useEffect, useRef } from "react";
-import SocketIOClient from "socket.io-client";
+import { useState, useEffect, useRef, useSyncExternalStore } from "react";
 import "./ChatBox.scss";
+import {  socketContext } from "../../../App";
+import { useContext } from "react";
+import { addMessages } from "../../../slices/messagesSlice";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 function ChatBox() {
-  // const io = SocketIOClient("http://localhost:8080/");
   const messageRef = useRef();
+  const socket = useContext(socketContext);
+  const currentChat = useSelector((state) => state.activeChat.chatDetails);
+  console.log(currentChat);
+  const userData = useSelector((state) => state.user.userDetails);
+  const messages = useSelector((state) => state.messages.messages);
+  const socketId = useSelector((state) => state.socketId.socketId)
+  const dispatch = useDispatch();
   function sendMessages() {
-    setMessages([
-      ...messages,
-      { message: messageRef.current.value, sent: "user" },
-    ]);
+    socket.emit("message",{
+      content:messageRef.current.value,
+      sent:userData.id,
+      room:currentChat.room,
+      senderId:socketId
+    })
+    dispatch(addMessages({
+      sent:"user",
+      message:messageRef.current.value
+    }));
     messageRef.current.value = "";
   }
-  // useEffect(() => {
-  //   io.on("connect", (socket) => {
-  //     console.log("connected to the server successfully!!");
-  //     console.log(socket.id);
-  //   });
-  // }, []);
-  const [messages, setMessages] = useState([
-    { message: "hi how are you doing", sent: "user" },
-    { message: "i am fine how about you", sent: "friend" },
-  ]);
+  
+ 
   return (
     <div id="chat-box-container">
       <input

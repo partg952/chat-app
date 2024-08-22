@@ -1,6 +1,6 @@
 div#main-container {
     overflow: hidden;
-    height: 600px;
+    height: 700px;
     width: 1000px;
     display: flex;
     align-items: center;
@@ -13,4 +13,13 @@ div#main-container {
     margin: auto;
     border-radius: 6px;
     background-color: red;
+    div#main-content {
+        margin-top: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        overflow: hidden;
+        height: 100%;
+        width: 100%;
+    }
 }

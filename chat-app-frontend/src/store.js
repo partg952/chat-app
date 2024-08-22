@@ -1,8 +1,16 @@
 import {configureStore} from '@reduxjs/toolkit';
-import userSlice from './userSlice';
+import userReducer from './slices/userSlice';
+import visibility from  './slices/requestsPageVisibility';
+import messages from './slices/messagesSlice';
+import activeChat from './slices/activeChat';
+import socketId from './slices/socketId';
 const store = configureStore({
     reducer:{
-        user:userSlice
+        user:userReducer,
+        requestsPageVisibility:visibility,
+        messages:messages,
+        activeChat:activeChat,
+        socketId:socketId
     }
 });
 

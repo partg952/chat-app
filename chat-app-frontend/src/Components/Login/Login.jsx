@@ -2,7 +2,8 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";  
+import { addData } from "../../slices/userSlice";
 import axios from "axios";
 import { useRef, useState } from "react";
 import "./Login.scss";
@@ -13,6 +14,7 @@ function Login() {
   const [url, setUrl] = useState("");
   const [file, setFile] = useState();
   const fileRef = useRef();
+  const dispatch = useDispatch();
   const [loginZindex, setLoginZindex] = useState(1);
   const [registerZindex, setRegisterZindex] = useState(-1);
   const [formDataLogin, setFormDataLogin] = useState({});
@@ -53,6 +55,8 @@ function Login() {
           console.log(data);
           if (data.data.Message == "Login success") {
             setColor("#0d7004");
+            console.log(data.data.userData);
+            dispatch(addData(data.data.userData)) 
             navigate("/home");
           }
           setContent(data.data.Message);

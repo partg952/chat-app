@@ -1,14 +1,16 @@
 /* eslint-disable no-unused-vars */
 import { createSlice } from "@reduxjs/toolkit";
 
-const startingState = {};
+const startingState = {
+    userDetails:null
+};
 
 const userSlice = createSlice({
     name:'user-slice',
-    startingState,
+    initialState:startingState,
     reducers : {
         addData:(state,action) => {
-            state = action.payload;
+            state.userDetails = action.payload;
         }
     }
 });

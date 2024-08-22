@@ -1,0 +1,47 @@
+div#requests-parent-container {
+    width: 70%;
+    position: absolute;
+    height: 100%;
+    background-color: magenta;
+    right: 0;
+    z-index: 4;
+    visibility: hidden;
+    #requests {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        background-color: red;
+        margin-top: 60px;
+        padding: 10px;
+        #request-item {
+            display: flex;
+            align-items: center;
+            overflow-y: hidden;
+            justify-content: space-between;
+            #buttons {
+                margin: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                button {
+                    margin: 10px;
+                    background-color: transparent;
+                    border: 0;
+                    font-size: 25px;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+    button#close-button {
+        background-color: transparent;
+        border: 0;
+        position: absolute;
+        right: 0;
+        margin: 10px;
+        font-size: larger;
+        cursor: pointer;
+    }
+}
