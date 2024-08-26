@@ -21,7 +21,7 @@ function Socket() {
       dispatch(
         addMessages({
           message: message.content,
-          sent: "friend",
+          sentBy:message.sentBy,
         })
       );
     });

@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const userModel = require("../../models/User.js");
 const express = require("express");
 const router = express.Router();
+const messageModel = require("../../models/Message.js");
 
 router.get("/", async function (req, res) {
   let users = await userModel.find();
@@ -107,4 +108,10 @@ router.post("/get-friends", async function (req, res) {
   console.log(friends);
   res.send(friends);
 });
+router.post("/get-chats",async function(req,res) {
+  const room = req.body.roomName;
+  const query = messageModel.where({"chatRoom" : room});
+  const messages = await messageModel.find(query);
+  res.send(messages); 
+})
 module.exports = router;

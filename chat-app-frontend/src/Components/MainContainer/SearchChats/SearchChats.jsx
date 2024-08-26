@@ -5,6 +5,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { useContext } from "react";
+import { addMessages } from "../../../slices/messagesSlice";
 import { socketContext } from "../../../App";
 import { useDispatch } from "react-redux";
 import { setCurrentChat } from "../../../slices/activeChat";
@@ -13,12 +14,31 @@ function SearchChats() {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.user);
   const currentChat = useSelector((state) => state.activeChat.chat);
+  let [joinedRooms, addRooms] = useState([]);
   const [chats, setChats] = useState([]);
-  console.log(chats);
   const [searchResult, setSearchResults] = useState();
   const [visibility, setVisibility] = useState("hidden");
   const [friends, setFriends] = useState([]);
   const socket = useContext(socketContext);
+  console.log(currentChat);
+  console.log(chats);
+  useEffect(
+    () => {
+      console.log("in the fetch messages use effect");
+      async function fetchMessages() {
+        console.log("fetch messages function called");
+        const messages = await axios.post(
+          "https://localhost:2003/search-users/get-messages",
+          {
+            room: currentChat.room,
+          }
+        );
+        dispatch(addMessages(messages.data));
+      }
+      fetchMessages();
+    },
+    [currentChat]
+  );
   useEffect(() => {
     setChats([]);
     const getFriends = async () => {
@@ -46,6 +66,7 @@ function SearchChats() {
     getUsers();
     console.log(chats);
   }, []);
+
   async function handleFriendRequest(uid) {
     console.log(userData.userDetails.id);
     return new Promise((res, rej) => {
@@ -119,7 +140,7 @@ function SearchChats() {
               <div
                 id="chat-item"
                 onClick={() => {
-                  const roomname = `${userData.userDetails.id}${item.id}`.split("").sort().join("");
+                  const roomname = `${userData.userDetails.id}and${item.id}`;
                   dispatch(
                     setCurrentChat({
                       reciever: item.userInfo.email,
@@ -127,11 +148,10 @@ function SearchChats() {
                       room: roomname,
                     })
                   );
-
-                  socket.emit(
-                    "join_room",
-                    roomname
-                  );
+                  if (!joinedRooms.includes(roomname)) {
+                    socket.emit("join_room", roomname);
+                    addRooms(roomname);
+                  }
                 }}
               >
                 <p>{item.userInfo.email}</p>

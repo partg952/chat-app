@@ -8,7 +8,7 @@ const activeChat = createSlice({
     },
     reducers : {
         setCurrentChat : (state,action) => {
-            state.chatDetails = action.payload
+            state.chatDetails = {...action.payload};
         }
 
     }
