@@ -6,6 +6,7 @@ const messageSchema = new mongoose.Schema({
     sentBy:String,
     sentTo:String,
     chatRoom:String,
+    senderMail:String,
 });
 const messageModel = mongoose.model("chats",messageSchema);
 

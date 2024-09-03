@@ -95,7 +95,7 @@ router.post("/" ,upload.single("profile_pic"), async (req, res) => {
       requests:[]
     });
     await data.save();
-    const query = await mongoose.findOne({'userInfo.email' : userEmail});
+    const query = await userModel.findOne({'userInfo.email' : userEmail});
 
     res.json({
       Message: "The user has been saved",

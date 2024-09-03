@@ -47,23 +47,29 @@ io.on("connection", (device) => {
   });
   device.on("message", async (message) => {
     console.log(message);
-    const room = message.chatRoom.split("").sort().join("");
-    console.log(`message : ${message.content} room:${room}`);
-    device.to(room).except(message.senderId).emit("message", {
-      content: message.content,
-      sentBy: message.sentBy,
-      sentTo: message.sentBy,
-      room: message.roomName,
-    });
-    const { v4: uuidv4 } = require("uuid");
-    const messageDataForDb = new messageModel({
-      id: uuidv4().toString(),
-      content: message.content,
-      sentBy: message.sentBy,
-      sentTo: message.sentTo,
-      chatRoom: message.roomName,
-    });
-    await messageDataForDb.save();
+    if (message != undefined) {
+      const room = message.chatRoom.split("").sort().join("");
+      console.log(`message : ${message.content} room:${room}`);
+      device.to(room).except(message.senderId).emit("message", {
+        content: message.content,
+        sentBy: message.sentBy,
+        senderMail: message.senderMail,
+        room: message.roomName,
+      });
+      const { v4: uuidv4 } = require("uuid");
+      const messageDataForDb = new messageModel({
+        id: uuidv4().toString(),
+        content: message.content,
+        sentBy: message.sentBy,
+        chatRoom: room,
+        senderMail:message.senderMail
+      });
+      await messageDataForDb.save();
+    }
+  });
+  device.on("request_updated",() => {
+    console.log("there has been some changes in the requests");
+    device.emit("request_updated","change in requests");
   });
 });
 server.listen(2003, () => console.log("listening on port 2003"));

@@ -109,9 +109,10 @@ router.post("/get-friends", async function (req, res) {
   res.send(friends);
 });
 router.post("/get-chats",async function(req,res) {
-  const room = req.body.roomName;
+  const room = req.body.room!=undefined && req.body.room.split("").sort().join("");
   const query = messageModel.where({"chatRoom" : room});
   const messages = await messageModel.find(query);
+  console.log(messages);
   res.send(messages); 
 })
 module.exports = router;
