@@ -5,13 +5,21 @@ import "./Requests.scss";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { useEffect } from "react";
-
+import { socketContext } from "../../../App";
+import { useContext } from "react";
 import { hide } from "../../../slices/requestsPageVisibility";
 function Requests() {
   let userData = useSelector((state) => state.user.userDetails);
+  let requestsChange = useSelector((state) => state.requestsUpdated.value);
+  let [change,setChange] = useState(true);
   let [requests, setRequests] = useState([]);
+  let socket = useContext(socketContext);
   console.log(userData.id);
+  console.log(change);
+ 
   useEffect(() => {
+    console.log("this has been triggered")
+    setRequests([]);
     axios
       .post("http://localhost:2003/search-users/get-requests", {
         userId: userData.id,
@@ -32,7 +40,7 @@ function Requests() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [requestsChange]);
   let dispatch = useDispatch();
   let visibility = useSelector(
     (state) => state.requestsPageVisibility.visibility
@@ -51,6 +59,7 @@ function Requests() {
                 <button
                   id="accept-button"
                   onClick={() => {
+                    if (!userData.friends.includes(item.id))
                     axios
                       .post(
                         "http://localhost:2003/search-users/accept-requests",
@@ -61,6 +70,7 @@ function Requests() {
                       )
                       .then((succ) => {
                         console.log(succ);
+                        socket.emit("request_updated");
                       })
                       .catch((err) => {
                         console.log(err);

@@ -8,10 +8,13 @@ let messageSlice = createSlice({
   reducers: {
     addMessages: (state, action) => {
       let newMessages = action.payload;
-      state.messages = [...state.messages, newMessages];
+      state.messages = state.messages.concat(newMessages) 
     },
+    resetChats:(state) => {
+      state.messages = [];
+    }
   },
 });
 
-export const { addMessages } = messageSlice.actions;
+export const { addMessages,resetChats } = messageSlice.actions;
 export default messageSlice.reducer;

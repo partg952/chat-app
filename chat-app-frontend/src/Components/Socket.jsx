@@ -5,6 +5,7 @@ import { addMessages } from "../slices/messagesSlice";
 import { socketContext } from "../App";
 import { useDispatch } from "react-redux";
 import { addSocketId } from "../slices/socketId";
+import { change } from "../slices/requestChange";
 import { useState } from "react";
 function Socket() {
   const io = useContext(socketContext);
@@ -20,11 +21,16 @@ function Socket() {
       console.log(message);
       dispatch(
         addMessages({
-          message: message.content,
+          content: message.content,
           sentBy:message.sentBy,
+          senderMail:message.senderMail
         })
       );
     });
+    io.on("request_updated",function() {
+      console.log("reporting the requests change in the client side");
+      dispatch(change());
+    })
   }, []);
 }
 export default Socket;

@@ -1,14 +1,32 @@
-body {}
-
 #search-chats-div {
-
+  margin-left: 0;
   float: left;
+  padding: 10px;
+  border-right: 5px solid white;
   height: 100%;
-  width: 30%;
-  background-color: blue;
+  width: 40%;
+  background-color: transparent;
   padding: 5px;
   align-items: center;
   justify-content: center;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.222);
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.468);
+    }
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
 
   input {
     position: relative;
@@ -19,30 +37,52 @@ body {}
     padding: 10px;
     margin-left: auto;
     margin-right: auto;
-    width: 90%;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    width: 80%;
   }
 
   div#chats-and-contacts {
     padding: 10px;
-    background-color: yellow;
     margin: 10px;
     height: 100%;
     overflow: scroll;
 
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background-color: rgba(0, 0, 0, 0.222);
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.468);
+      }
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+
+
+
     div#search-chat-results {
       height: 300px;
       overflow: scroll;
-      background-color: purple;
-      width: 100%;
       position: absolute;
+      background-image: url(../../../assets/login-page-bg.jpg);
+      background-size: cover;
       z-index: 1;
+      border:2px solid white;
       display: flex;
       flex-wrap: wrap;
       flex-direction: column;
       align-items: center;
-      // justify-content: center;
-      width: 30%;
-      left: 5px;
+      width: 350px;
+      padding: 5px;
+      margin-right: auto;
+      margin-left: auto;
       border-radius: 10px;
       overflow-x: hidden;
 
@@ -53,6 +93,7 @@ body {}
       &::-webkit-scrollbar-thumb {
         border-radius: 10px;
         background-color: rgba(0, 0, 0, 0.222);
+
         &:hover {
           background-color: rgba(0, 0, 0, 0.468);
         }
@@ -69,15 +110,18 @@ body {}
           h6 {
             margin: 0;
           }
-          width: 270px;
+
+          width: 300px;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          border: 0; 
-          padding: 5px;
-          border-radius: 5px;
-          background-color: red;
+          border: 0;
+          padding: 10px;
+          border-radius: 10px;
+          border: 2px solid white;
+          backdrop-filter: blur(8px);
           margin: 5px;
+
           button#add-friend {
             background-color: transparent;
             border: 0;
@@ -95,27 +139,31 @@ body {}
         cursor: pointer;
         float: left;
         text-align: right;
-        position:inherit;
+        position: inherit;
         right: 0;
         z-index: 3;
         margin-top: 10px;
+        margin-bottom: 10px;
         margin-right: 0;
       }
     }
 
     div#chat-item {
-      padding: 5px;
+      padding: 10px;
       position: relative;
-      margin-left: -6px;
+      margin-left: auto;
       margin-right: auto;
       justify-content: space-between;
       display: flex;
       flex-direction: column;
-      width: 100%;
-      border: black 2px solid;
-      border-radius:10px;
+      width: 90%;
+      border: white 2px solid;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      margin-top: 10px;
       height: 50px;
       cursor: pointer;
+
       p {
         margin: 0;
       }

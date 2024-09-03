@@ -13,18 +13,24 @@ function ChatBox() {
   console.log(currentChat);
   const userData = useSelector((state) => state.user.userDetails);
   const messages = useSelector((state) => state.messages.messages);
+  console.log(messages);
   const socketId = useSelector((state) => state.socketId.socketId)
   const dispatch = useDispatch();
   function sendMessages() {
     socket.emit("message",{
       content:messageRef.current.value,
       sentBy:userData.id,
+      senderMail:userData.userInfo.email,
       chatRoom:currentChat.room,
       senderId:socketId
     })
+    document.getElementById("chats-box").scrollTop = document.getElementById("chats-box").scrollHeight;
     dispatch(addMessages({
+      content:messageRef.current.value,
       sentBy:userData.id,
-      message:messageRef.current.value
+      senderMail:userData.userInfo.email,
+      chatRoom:currentChat.room,
+      senderId:socketId   
     }));
     messageRef.current.value = "";
   }
@@ -46,13 +52,14 @@ function ChatBox() {
       <div id="chats-box">
         {messages.map((item) => {
           const userId = userData.id;
+          console.log(item);
           let messageStyle = {
             textAlign: item.sentBy == userId ? "right" : "left",
             padding: "10px",
           };
           return (
             <div id="message" style={messageStyle}>
-              <p id="user-name">{userData.userInfo.email}</p>
+              <p id="user-name">{item.senderMail}</p>
               <p
                 id="message-text"
                 style={
@@ -61,7 +68,7 @@ function ChatBox() {
                     : { borderBottomLeftRadius: "0", marginRight: "auto" }
                 }
               >
-                {item.message}
+                {item.content}
               </p>
             </div>
           );
