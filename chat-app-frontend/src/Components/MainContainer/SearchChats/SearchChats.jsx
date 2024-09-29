@@ -23,27 +23,7 @@ function SearchChats() {
   const socket = useContext(socketContext);
   console.log(currentChat);
   console.log(chats);
-  useEffect(() => {
-    setChats([]);
-    const getFriends = async () => {
-      const data = await axios.post(
-        "http://localhost:2003/search-users/get-friends",
-        { userId: userData.userDetails.id }
-      );
-      setFriends(data.data);
-      console.log(data.data);
-      data.data.forEach(async (user) => {
-        const friend = await axios.post(
-          "http://localhost:2003/search-users/get-user-info",
-          { userId: user }
-        );
-        setChats((prev) => [...prev, friend.data]);
-        console.log(friend); 
-      });
-      console.log(searchResult);
-    };
-    getFriends()
-  },[requestsUpdated])
+  
   useEffect(
     () => {
       console.log("in the fetch messages use effect");
@@ -91,7 +71,7 @@ function SearchChats() {
     getFriends();
     getUsers();
     console.log(chats);
-  }, []);
+  }, [requestsUpdated]);
 
   async function handleFriendRequest(uid) {
     console.log(userData.userDetails.id);
@@ -149,7 +129,7 @@ function SearchChats() {
                           handleFriendRequest(item.id)
                             .then((res) => {
                               console.log(res);
-                              socket.emit("request_updated");
+                              socket.emit("request_updated","");
                             })
                             .catch((err) => {
                               console.log(err);
