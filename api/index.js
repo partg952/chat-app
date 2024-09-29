@@ -12,6 +12,7 @@ const app = express();
 const server = http.createServer(app);
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const userArray = [];
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb" }));
 app.use(cors());
@@ -39,12 +40,17 @@ const io = new Server(server, {
 
 io.on("connection", (device) => {
   console.log("a device connected : ", device.id);
+ 
   device.on("join_room", (room) => {
     const actualRoomName = room.split("").sort().join("");
+    
     device.join(actualRoomName);
     console.log(room);
     console.log("user that joined the room" + device.id);
   });
+  io.on("register_user",user => {
+    
+  })
   device.on("message", async (message) => {
     console.log(message);
     if (message != undefined) {
